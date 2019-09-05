@@ -1,6 +1,5 @@
 #!/bin/bash
 
-<<<<<<< HEAD
 #list of paths to genotype array data 
 INPUT_LIST=$1
 
@@ -40,36 +39,6 @@ PHASED_VCF="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased"
 #path to output VCF of IBD calling
 PHASED_IBD_OUT="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased-ibd-called.vcf.gz"
 
-=======
-TO_VCF=/Users/rob/src/github.com/plantimals/2vcf/bin/2vcf
-
-INPUT_LIST=$1
-
-PEDIGREE=$2
-
-REFERENCE=/Users/rob/data/science/markers/dbSNP/2vcf-v2.1.vcf.gz
-
-WORKING_DIRECTORY=./tmp
-
-BIN_DIRECTORY=./bin
-
-#unique identifier for a pipeline run, signature of inputs
-INPUT_MD5=`md5 -q ${INPUT_LIST}`
-
-MERGED_VCF="${WORKING_DIRECTORY}/${INPUT_MD5}-merged.vcf.gz"
-
-PHASED_VCF="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased"
-
-BEAGLE4_JAR="${BIN_DIRECTORY}/beagle.r1399.jar"
-
-BEAGLE5_JAR="${BIN_DIRECTORY}/beagle.24Aug19.3e8.jar"
-
-REFINED_IBD_JAR="${BIN_DIRECTORY}/refined-ibd.16May19.ad5.jar"
-
-PHASED_IBD_OUT="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased-ibd-called.vcf.gz"
-
-REF_PANEL=/Users/rob/data/science/populations/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz
->>>>>>> 1aacd1c6a2045888056f03d35eb2a8c3f10d4e14
 
 function indexVCF () {
   local VCF=$1 
