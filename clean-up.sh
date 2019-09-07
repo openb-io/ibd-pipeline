@@ -1,3 +1,8 @@
 #!/bin/bash
 
-rm ./tmp/*
+rm ./inputs/*.gz
+rm ./inputs/*.tbi
+rm ./inputs/*.ibd
+rm ./inputs/*.hbd
+rm ./inputs/*.warnings
+rm ./inputs/*.log

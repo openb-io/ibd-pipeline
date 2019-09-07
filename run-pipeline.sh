@@ -7,13 +7,13 @@ INPUT_LIST=$1
 PEDIGREE=$2
 
 #path to intermediate and result files
-WORKING_DIRECTORY=./tmp
+WORKING_DIRECTORY=./inputs
 
 #path to binaries
 BIN_DIRECTORY=./bin
 
 #unique identifier for a pipeline run, signature of inputs, the MD5 hash of the input list file
-INPUT_MD5=`md5sum ${INPUT_LIST}`
+INPUT_MD5=`md5sum ${INPUT_LIST} | awk '{print $1}'`
 
 #path to the 2vcf binary
 TO_VCF="${BIN_DIRECTORY}/2vcf"
@@ -97,17 +97,19 @@ function refinedIBD () {
   eval ${CMD}
 }
 
+echo ${INPUT_MD5}
+
 # main pipeline
 
 # run stage 1 - convert input to VCF
-
 ingestion
 
 # run stage 2 - merge VCF
 merge
 
-# run stage 3 - phasing
+# run stage 3 - phasing with beagle 4.1
 phasingB4
-#phasingB5
 
+# run stage 3 - phasing with beagle 5.1 and refinedIBD
+#phasingB5
 #refinedIBD

@@ -5,4 +5,4 @@ bin/
 nohup.out
 .DS_Store
 outfile.txt
-
+inputs/
