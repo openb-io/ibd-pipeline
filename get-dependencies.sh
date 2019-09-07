@@ -8,9 +8,9 @@ mkdir tmp
 
 cd bin 
 
-wget https://github.com/plantimals/2vcf/releases/download/v0.4.1/2vcf_0.4.1_Darwin_amd64.tar.gz
-tar -zxvf 2vcf_0.4.1_Darwin_amd64.tar.gz 2vcf
-rm 2vcf_0.4.1_Darwin_amd64.tar.gz
+wget https://github.com/plantimals/2vcf/releases/download/v0.5/2vcf_0.5_Linux_amd64.tar.gz
+tar -zxvf 2vcf_0.5_Linux_amd64.tar.gz 2vcf
+rm 2vcf_0.5_Linux_amd64.tar.gz
 
 wget http://openb.io/2vcf/2vcf-v2.1.vcf.gz
 

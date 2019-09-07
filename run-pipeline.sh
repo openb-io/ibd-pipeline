@@ -13,7 +13,7 @@ WORKING_DIRECTORY=./tmp
 BIN_DIRECTORY=./bin
 
 #unique identifier for a pipeline run, signature of inputs, the MD5 hash of the input list file
-INPUT_MD5=`md5 -q ${INPUT_LIST}`
+INPUT_MD5=`md5sum ${INPUT_LIST}`
 
 #path to the 2vcf binary
 TO_VCF="${BIN_DIRECTORY}/2vcf"
