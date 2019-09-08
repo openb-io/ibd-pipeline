@@ -3,3 +3,6 @@ subject-no-allosome.list
 tmp/
 bin/
 nohup.out
+.DS_Store
+outfile.txt
+inputs/
