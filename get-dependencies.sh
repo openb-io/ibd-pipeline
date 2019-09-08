@@ -4,7 +4,6 @@
 set -e
 
 mkdir bin 
-mkdir tmp
 
 cd bin 
 
@@ -25,6 +24,6 @@ wget http://faculty.washington.edu/browning/refined-ibd/refined-ibd.16May19.ad5.
 wget http://faculty.washington.edu/sguy/IBD_relatedness.tar
 tar -xf IBD_relatedness.tar
 
+# get combined human genetic map
 wget http://openb.io/2vcf/plink.GRCh37.map.gz
-gunzip plink.GRC37.map.gz
-
+gunzip plink.GRCh37.map.gz
