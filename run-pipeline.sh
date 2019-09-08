@@ -18,26 +18,33 @@ INPUT_MD5=`md5sum ${INPUT_LIST} | awk '{print $1}'`
 #path to the 2vcf binary
 TO_VCF="${BIN_DIRECTORY}/2vcf"
 
-#path to 2vcf reference
+# path to 2vcf reference
 REFERENCE="${BIN_DIRECTORY}/2vcf-v2.1.vcf.gz"
 
-#path to beagle4 jar
+# path to beagle4 jar
 BEAGLE4_JAR="${BIN_DIRECTORY}/beagle.r1399.jar"
 
-#path to beagle5 jar
+# path to beagle5 jar
 BEAGLE5_JAR="${BIN_DIRECTORY}/beagle.24Aug19.3e8.jar"
 
-#path to refined IBD jar
+# path to refined IBD jar
 REFINED_IBD_JAR="${BIN_DIRECTORY}/refined-ibd.16May19.ad5.jar"
 
-#path to merged VCF after conversion of inputs
+# path to merged VCF after conversion of inputs
 MERGED_VCF="${WORKING_DIRECTORY}/${INPUT_MD5}-merged.vcf.gz"
 
-#path to phased VCF
+# path to phased VCF
 PHASED_VCF="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased"
 
-#path to output VCF of IBD calling
-PHASED_IBD_OUT="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased-ibd-called.vcf.gz"
+# path to output VCF of IBD calling
+PHASED_IBD_OUT="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased-ibd-called"
+
+# human genetic map
+GENETIC_MAP="${WORKING_DIRECTORY}/plink.GRC37.map"
+
+CM_THRESHOLD="1"
+
+RELATEDNESS="${WORKING_DIRECTORY}/${INPUT_MD5}-relatedness.txt"
 
 
 function indexVCF () {
@@ -97,9 +104,16 @@ function refinedIBD () {
   eval ${CMD}
 }
 
-echo ${INPUT_MD5}
+function relatedness () {
+  CMD="cat ${PHASED_IBD_OUT}.ibd | python bin/IBD_relatedness/relatedness_v1.py ${GENETIC_MAP} ${CM_THRESHOLD} > ${RELATEDNESS}"
+  eval ${CMD}
+}
 
-# main pipeline
+#################
+# main pipeline #
+#################
+
+echo "inputs/family.ped MD5: ${INPUT_MD5}"
 
 # run stage 1 - convert input to VCF
 ingestion
@@ -113,3 +127,6 @@ phasingB4
 # run stage 3 - phasing with beagle 5.1 and refinedIBD
 #phasingB5
 #refinedIBD
+
+# run stage 4 - relatedness
+relatedness
