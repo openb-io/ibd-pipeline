@@ -21,9 +21,9 @@ wget https://faculty.washington.edu/browning/beagle/beagle.24Aug19.3e8.jar
 wget http://faculty.washington.edu/browning/refined-ibd/refined-ibd.16May19.ad5.jar
 
 # get and unpack relatedness_v2.py
-wget http://faculty.washington.edu/sguy/IBD_relatedness.tar
-tar -xf IBD_relatedness.tar
+#wget http://faculty.washington.edu/sguy/IBD_relatedness.tar
+#tar -xf IBD_relatedness.tar
 
 # get combined human genetic map
-wget http://openb.io/2vcf/plink.GRCh37.map.gz
-gunzip plink.GRCh37.map.gz
+#wget http://openb.io/2vcf/plink.GRCh37.map.gz
+#gunzip plink.GRCh37.map.gz

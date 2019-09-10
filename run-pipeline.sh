@@ -7,10 +7,10 @@ INPUT_LIST=$1
 PEDIGREE=$2
 
 #path to intermediate and result files
-WORKING_DIRECTORY=/openb.io/inputs
+WORKING_DIRECTORY=./inputs
 
 #path to binaries
-BIN_DIRECTORY=/openb.io/bin
+BIN_DIRECTORY=./bin
 
 #unique identifier for a pipeline run, signature of inputs, the MD5 hash of the input list file
 INPUT_MD5=`md5sum ${INPUT_LIST} | awk '{print $1}'`
