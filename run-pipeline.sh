@@ -14,6 +14,7 @@ BIN_DIRECTORY=./bin
 
 #unique identifier for a pipeline run, signature of inputs, the MD5 hash of the input list file
 INPUT_MD5=`md5sum ${INPUT_LIST} | awk '{print $1}'`
+#INPUT_MD5=`md5 -q ${INPUT_LIST}`
 
 #path to the 2vcf binary
 TO_VCF="${BIN_DIRECTORY}/2vcf"
@@ -46,7 +47,7 @@ CM_THRESHOLD="1"
 
 RELATEDNESS="${BIN_DIRECTORY}/IBD_relatedness/relatedness_v1.py"
 
-RELATEDNESS_OUTPUT="${WORKING_DIRECTORY}/${INPUT_MD5}-relatedness.txt"
+RELATEDNESS_OUTPUT="${WORKING_DIRECTORY}/${INPUT_MD5}-relatedness"
 
 
 function indexVCF () {
@@ -92,22 +93,31 @@ function merge () {
 
 # Stage 3 - phasing
 function phasingB4 () {
-  local CMD="java -Xmx10g -jar ${BEAGLE4_JAR} nthreads=6 gt=${MERGED_VCF} impute=false gprobs=false ped=${PEDIGREE} ibd=true ibdlod=4.0 out=${PHASED_VCF}"
+  local CMD="java -Xmx7g -jar ${BEAGLE4_JAR} nthreads=4 gt=${MERGED_VCF} impute=false gprobs=false ped=${PEDIGREE} ibd=true ibdlod=4.0 out=${PHASED_VCF}"
   eval ${CMD}
 }
 
 function phasingB5 () {
-  local CMD="java -Xmx10g -jar ${BEAGLE5_JAR} nthreads=4 gt=${MERGED_VCF} impute=false out=${PHASED_VCF}"
+  local CMD="java -Xmx7g -jar ${BEAGLE5_JAR} nthreads=2 gt=${MERGED_VCF} impute=false out=${PHASED_VCF}"
   eval ${CMD}
 }
 
 function refinedIBD () {
-  local CMD="java -Xmx10g -jar ${REFINED_IBD_JAR} nthreads=6 gt=${PHASED_VCF}.vcf.gz.vcf.gz.vcf.gz out=${PHASED_IBD_OUT}"
+  local CMD="java -Xmx7g -jar ${REFINED_IBD_JAR} nthreads=4 gt=${PHASED_VCF}.vcf.gz out=${PHASED_IBD_OUT}"
   eval ${CMD}
 }
 
-function relatedness () {
-  local CMD="cat ${PHASED_VCF}.ibd | python ${RELATEDNESS} ${GENETIC_MAP} ${CM_THRESHOLD} > ${RELATEDNESS_OUTPUT}"
+function relatednessB4 () {
+  local CMD="cat ${PHASED_VCF}.ibd | python ${RELATEDNESS} ${GENETIC_MAP} ${CM_THRESHOLD} > ${RELATEDNESS_OUTPUT}.ibd.txt"
+  echo "CMD=${CMD}"
+  eval ${CMD}
+}
+
+function relatednessB5 () {
+  local CMD="zcat ${PHASED_IBD_OUT}.hbd.gz | python ${RELATEDNESS} ${GENETIC_MAP} ${CM_THRESHOLD} > ${RELATEDNESS_OUTPUT}.hbd.txt"
+  echo "CMD=${CMD}"
+  eval ${CMD}
+  CMD="zcat ${PHASED_IBD_OUT}.ibd.gz | python ${RELATEDNESS} ${GENETIC_MAP} ${CM_THRESHOLD} > ${RELATEDNESS_OUTPUT}.ibd.txt"
   echo "CMD=${CMD}"
   eval ${CMD}
 }
@@ -125,11 +135,14 @@ ingestion
 merge
 
 # run stage 3 - phasing with beagle 4.1
-phasingB4
+#phasingB4
 
 # run stage 3 - phasing with beagle 5.1 and refinedIBD
-#phasingB5
-#refinedIBD
+phasingB5
+refinedIBD
 
 # run stage 4 - relatedness
-#relatedness
+#relatednessB4
+
+# run stage 4 - relatedness
+relatednessB5

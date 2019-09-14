@@ -6,6 +6,7 @@ RUN apt-get update && \
     apt-get -y install default-jre-headless && \
     apt-get -y install wget && \
     apt-get -y install tabix bcftools && \
+    apt-get -y install python && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
