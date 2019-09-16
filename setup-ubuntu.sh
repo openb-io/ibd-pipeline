@@ -7,5 +7,3 @@ apt-get update && \
     apt-get -y install tabix bcftools && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-./get-dependencies.sh
