@@ -40,6 +40,8 @@ PHASED_VCF="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased"
 # path to output VCF of IBD calling
 PHASED_IBD_OUT="${WORKING_DIRECTORY}/${INPUT_MD5}-merged-phased-ibd-called"
 
+PHASED_IBD_ESTIMATED="${PHASED_IBD_OUT}-estimated"
+
 # human genetic map
 GENETIC_MAP="${BIN_DIRECTORY}/plink.GRCh37.map"
 
@@ -107,8 +109,13 @@ function refinedIBD () {
   eval ${CMD}
 }
 
+function estimateCM () {
+  cat ${PHASED_VCF}.hbd | awk '{print $0"\t"($7-$6)/1000000}' > ${PHASED_VCF}.estimated.hbd
+  cat ${PHASED_VCF}.ibd | awk '{print $0"\t"($7-$6)/1000000}' > ${PHASED_VCF}.estimated.ibd
+}
+
 function relatednessB4 () {
-  local CMD="cat ${PHASED_VCF}.ibd | python ${RELATEDNESS} ${GENETIC_MAP} ${CM_THRESHOLD} > ${RELATEDNESS_OUTPUT}.ibd.txt"
+  local CMD="cat ${PHASED_VCF}.estimated.hbd | python ${RELATEDNESS} ${GENETIC_MAP} ${CM_THRESHOLD} > ${RELATEDNESS_OUTPUT}.ibd.txt"
   echo "CMD=${CMD}"
   eval ${CMD}
 }
@@ -135,14 +142,15 @@ ingestion
 merge
 
 # run stage 3 - phasing with beagle 4.1
-#phasingB4
+phasingB4
+estimateCM
 
 # run stage 3 - phasing with beagle 5.1 and refinedIBD
-phasingB5
-refinedIBD
+#phasingB5
+#refinedIBD
 
 # run stage 4 - relatedness
-#relatednessB4
+relatednessB4
 
 # run stage 4 - relatedness
-relatednessB5
+#relatednessB5
